@@ -1,4 +1,4 @@
-<h1>Failed Jobs <%= "on '#{params[:id]}'" if params[:id] %> <%= "with class '#{params[:class]}'" if params[:class] %></h1>
+<h1>Failed jobs <%= "on '#{params[:id]}'" if params[:id] %> <%= "with class '#{params[:class]}'" if params[:class] %></h1>
 
 <% if @jobs.any? %>
   <%= form_tag("/failures/#{params[:id] if params[:id]}", :method => :delete) do %>

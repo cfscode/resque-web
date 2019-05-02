@@ -5,15 +5,29 @@
 <% end %>
 
 <% unless failure_size.zero? %>
-  <%= form_tag(destroy_all_failures_path(queue: params[:queue]), method: :delete) do %>
-    <%= submit_tag "Clear #{failure_queue_name} Jobs", class: 'btn btn-danger', data: { confirm: "Are you sure you want to clear ALL #{failure_queue_name.downcase} jobs?" } %>
+  <div class='row'>
+    <%= form_tag(destroy_all_failures_path(queue: params[:queue]), class: 'form-inline', method: :delete) do |form| %>
+      <%= text_field form, :job_class, class: 'form-control', placeholder: 'Arguments Job Class' %>
+      <%= text_field form, :job_exception, class: 'form-control', placeholder: 'Job Exception' %>
+      <%= submit_tag "Clear #{failure_queue_name} Jobs", class: 'btn btn-danger', data: { confirm: "Are you sure you want to clear the #{failure_queue_name.downcase} jobs?" } %>
+    <% end %>
+  </div>
+
+  <br>
+
+  <div class='row'>
+    <%= form_tag(retry_all_failures_path(queue: params[:queue]), class: 'form-inline', method: :put) do |form| %>
+      <%= text_field form, :job_class, class: 'form-control', placeholder: 'Arguments Job Class' %>
+      <%= text_field form, :job_exception, class: 'form-control', placeholder: 'Job Exception' %>
+      <%= submit_tag "Retry #{failure_queue_name} Jobs", class: 'btn btn-primary', data: { confirm: "Are you sure you want to retry the #{failure_queue_name.downcase} jobs?" } %>
+    <% end %>
+  </div>
+
+  <div class='row pull-right'>
     <% if failure_size > failure_per_page %>
       <%= link_to "Last page &raquo;".html_safe, { start: (failure_size - failure_per_page) }, class: 'btn' %>
     <% end %>
-  <% end %>
-  <%= form_tag(retry_all_failures_path(queue: params[:queue]), method: :put) do %>
-    <%= submit_tag "Retry #{failure_queue_name} Jobs", class: 'btn', data: { confirm: "Are you sure you want to retry ALL #{failure_queue_name.downcase} jobs?" } %>
-  <% end %>
+  </div>
 <% end %>
 
 <% if multiple_failure_queues? && !params[:queue] %>
